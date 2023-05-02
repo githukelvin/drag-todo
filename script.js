@@ -1,33 +1,68 @@
 const draggable = document.querySelectorAll(".draggable");
 const conatiner = document.querySelectorAll(".container");
 
+let draggedElement = null;
+let initialTouchY = null;
 
-draggable.forEach((draggable,index)=>{
-    draggable.addEventListener("dragstart",()=>{
-       draggable.classList.add("dragging")
-    })
-    draggable.addEventListener("dragend",()=>{
-        draggable.classList.remove("dragging")
-    })
-})
+if (/Mobile/.test(navigator.userAgent)) {
+  draggable.forEach((draggable) => {
+    draggable.addEventListener("touchstart", (e) => {
+      draggedElement = e.target;
+      initialTouchY = e.touches[0].clientY;
+      draggable.classList.add("dragging");
+    });
 
-conatiner.forEach((container)=>{
+    draggable.addEventListener("touchend", () => {
+      draggedElement = null;
+      initialTouchY = null;
+      draggable.classList.remove("dragging");
+    });
+  });
+
+  container.forEach((container) => {
+    container.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+
+      if (draggedElement) {
+        const afterElement = getDragAfterElement(
+          container,
+          e.touches[0].clientY
+        );
+
+        if (afterElement == null) {
+          container.appendChild(draggedElement);
+        } else {
+          container.insertBefore(draggedElement, afterElement);
+        }
+      }
+    });
+  });
+} else {
+  draggable.forEach((draggable, index) => {
+    draggable.addEventListener("dragstart", () => {
+      draggable.classList.add("dragging");
+    });
+
+    draggable.addEventListener("dragend", () => {
+      draggable.classList.remove("dragging");
+    });
+  });
+
+  container.forEach((container) => {
     container.addEventListener("dragover", (e) => {
       e.preventDefault();
-      const afterElement = getDragAfterElement(container,e.clientY)
+
+      const afterElement = getDragAfterElement(container, e.clientY);
       const draggable = document.querySelector(".dragging");
-      if(afterElement ==null){
+
+      if (afterElement == null) {
         container.appendChild(draggable);
-      } 
-      else{
-        container.insertBefore(draggable ,afterElement)
+      } else {
+        container.insertBefore(draggable, afterElement);
       }
-      
-      
     });
-})
-
-
+  });
+}
 function getDragAfterElement(container ,y){
    const draggableElements =[...container.querySelectorAll(".draggable:not(.dragging)")]
  return   draggableElements.reduce((closest,child)=>{
