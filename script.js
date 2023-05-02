@@ -19,20 +19,20 @@ if (/Mobile/.test(navigator.userAgent)) {
     });
   });
 
-  container.forEach((container) => {
-    container.addEventListener("touchmove", (e) => {
+  container.forEach((cont) => {
+    cont.addEventListener("touchmove", (e) => {
       e.preventDefault();
 
       if (draggedElement) {
         const afterElement = getDragAfterElement(
-          container,
+          cont,
           e.touches[0].clientY
         );
 
         if (afterElement == null) {
-          container.appendChild(draggedElement);
+          cont.appendChild(draggedElement);
         } else {
-          container.insertBefore(draggedElement, afterElement);
+          cont.insertBefore(draggedElement, afterElement);
         }
       }
     });
