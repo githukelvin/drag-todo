@@ -139,7 +139,12 @@ ul.addEventListener("click",check)
 // }
 
 
-// c
+// check if the browser support localstorage
+if (typeof Storage !== "undefined") {
+  alert("local storage is supported");
+} else {
+  alert("local storage is not supported");
+}
 function saveLocal() {
   let todos;
   if (localStorage.getItem("todos") === null) {
