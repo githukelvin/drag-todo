@@ -1,5 +1,5 @@
 const draggable = document.querySelectorAll(".draggable");
-const conatiner = document.querySelectorAll(".container");
+const container = document.querySelectorAll(".container");
 
 let draggedElement = null;
 let initialTouchY = null;
@@ -63,6 +63,8 @@ if (/Mobile/.test(navigator.userAgent)) {
     });
   });
 }
+
+
 function getDragAfterElement(container ,y){
    const draggableElements =[...container.querySelectorAll(".draggable:not(.dragging)")]
  return   draggableElements.reduce((closest,child)=>{
